@@ -63,8 +63,9 @@ const { orderModel } = require("./FB_Order");
 
 app.post("/talkOrder", async (req, res) => {
   try {
-    const { number, foodName, Address} =req.body;
+    const {email, number, foodName, Address} =req.body;
     const orderDoc = await orderModel.create({
+      email,
       number,
       foodName,
       Address,
@@ -95,11 +96,11 @@ app.delete("/deleteOrder/:orderid", async (req, res) => {
 
 app.put("/editOrder/:orderid", async (req, res) => {
   const { orderid } = req.params;
-  const { number, foodName, Address } = req.body;
+  const { email,number, foodName, Address } = req.body;
   try {
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderid,
-      { number, foodName, Address },
+      { email,number, foodName, Address },
       { new: true }
     );
 
@@ -112,10 +113,10 @@ app.put("/editOrder/:orderid", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-app.get("/getOrdersByNum/:number", async (req, res) => {
-  const { number } = req.params;
+app.get("/getOrdersByEmail/:email", async (req, res) => {
+  const { email } = req.params;
   try {
-    const order = await orderModel.find({ number });
+    const order = await orderModel.find({ email });
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -184,8 +185,9 @@ const { Reservation } = require("./FB_Reserve");
 
 app.post('/reserve-table', async (req, res) => {
   try {
-    const { name, number, numberOfPeople, date, time } = req.body;
+    const {email, name, number, numberOfPeople, date, time } = req.body;
     const orderDoc = await Reservation.create({
+      email,
       name,
       number,
       numberOfPeople,
@@ -194,6 +196,18 @@ app.post('/reserve-table', async (req, res) => {
       createdAt: new Date(),
     });
     res.json(orderDoc);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+app.get("/getReserveByEmail/:email", async (req, res) => {
+  const { email } = req.params;
+  try {
+    const order = await Reservation.find({ email });
+    if (!order) {
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+    res.json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
