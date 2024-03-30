@@ -6,7 +6,7 @@ const port = 3000;
 const cors = require("cors");
 const app = express();
 
-const uri = "mongodb+srv://jeevanand:582004@cluster0.qrmugpb.mongodb.net/";
+const uri = "mongodb+srv://jeevanand:582004@cluster0.qrmugpb.mongodb.net/FoodBite";
 
 async function connect() {
   try {
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cors());
 
 // Login and SignUp
-const {User} = require("./FB_Login&SignUp")
+const {User} = require("./Food_Bite/FB_Login&SignUp")
 
 // SignUp 
 app.post("/signup", async (req, res) => {
@@ -59,7 +59,7 @@ app.post("/login", async (req, res) => {
 });
 
 // ADD ORDERS
-const { orderModel } = require("./FB_Order");
+const { orderModel } = require("./Food_Bite/FB_Order");
 
 app.post("/talkOrder", async (req, res) => {
   try {
@@ -181,7 +181,7 @@ app.post('/send-email', async (req, res) => {
 });
 
 // Reservation
-const { Reservation } = require("./FB_Reserve");
+const { Reservation } = require("./Food_Bite/FB_Reserve");
 
 app.post('/reserve-table', async (req, res) => {
   try {
