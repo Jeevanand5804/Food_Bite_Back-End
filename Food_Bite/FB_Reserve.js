@@ -8,6 +8,7 @@ const reservationSchema = new mongoose.Schema({
     numberOfPeople: Number,
     date: Date,
     time: String,
+    createdAt: { type: Date, default: Date.now },
   });
   
   const Reservation = mongoose.model('Reservation', reservationSchema);

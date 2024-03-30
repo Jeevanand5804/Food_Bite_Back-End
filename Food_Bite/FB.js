@@ -63,11 +63,11 @@ const { orderModel } = require("./FB_Order");
 
 app.post("/talkOrder", async (req, res) => {
   try {
-    const {email, number, foodName, Address} =req.body;
+    const {email, number, foodItems, Address} =req.body;
     const orderDoc = await orderModel.create({
       email,
       number,
-      foodName,
+      foodItems,
       Address,
       createdAt: new Date(),
     });
@@ -96,11 +96,11 @@ app.delete("/deleteOrder/:orderid", async (req, res) => {
 
 app.put("/editOrder/:orderid", async (req, res) => {
   const { orderid } = req.params;
-  const { email,number, foodName, Address } = req.body;
+  const { email,number, foodItems, Address } = req.body;
   try {
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderid,
-      { email,number, foodName, Address },
+      { email,number, foodItems, Address },
       { new: true }
     );
 

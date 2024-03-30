@@ -4,7 +4,14 @@ const { Schema } = mongoose;
 const orderSchema = new Schema({
   email:String,
   number: Number,
-  foodName: String,
+  foodItems: [
+    {
+      name: String,
+      quantity: Number,
+      price: Number
+    }
+  ],
+  // foodName: String,
   Address: String,
   createdAt: { type: Date, default: Date.now },
 });
