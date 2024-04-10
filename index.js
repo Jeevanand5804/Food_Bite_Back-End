@@ -84,22 +84,22 @@ app.get("/getAllOrders", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-app.delete("/deleteOrder/:orderid", async (req, res) => {
+app.delete("/deleteOrder/:reserveid", async (req, res) => {
   try {
-    const { orderid } = req.params;
-    await orderModel.deleteOne({ _id: orderid });
+    const { reserveid } = req.params;
+    await orderModel.deleteOne({ _id: reserveid });
     res.json({ message: "Order deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-app.put("/editOrder/:orderid", async (req, res) => {
-  const { orderid } = req.params;
+app.put("/editOrder/:reserveid", async (req, res) => {
+  const { reserveid } = req.params;
   const { email,number, foodItems, Address } = req.body;
   try {
     const updatedOrder = await orderModel.findByIdAndUpdate(
-      orderid,
+      reserveid,
       { email,number, foodItems, Address },
       { new: true }
     );
@@ -129,10 +129,11 @@ app.get("/getOrdersByEmail/:email", async (req, res) => {
 // ........ |- Email -| .........
 
 const emailSchema = new mongoose.Schema({
-  sender: String,
-  recipient: String,
+  from: String,
+  to: String,
   subject: String,
-  body: String,
+  text: String,
+  html:String,
   sentAt: {
     type: Date,
     default: Date.now,
@@ -145,14 +146,14 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'jeevanand5804@gmail.com',
-    pass: '01govtjob',
+    pass: 'ukoj rimy xrbv njbf',
   },
 });
 
 // Express route for sending email
 app.post('/send-email', async (req, res) => {
   try {
-    const { to, subject, text, html } = req.body;
+    const { from,to, subject, text, html } = req.body;
 
     const mailOptions = {
       from: 'jeevanand5804@gmail.com',
@@ -208,6 +209,35 @@ app.get("/getReserveByEmail/:email", async (req, res) => {
       return res.status(404).json({ message: "Reservation not found" });
     }
     res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+app.delete("/deleteReserve/:reserveid", async (req, res) => {
+  try {
+    const { reserveid } = req.params;
+    await Reservation.deleteOne({ _id: reserveid });
+    res.json({ message: "Order deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.put("/editReserve/:reserveid", async (req, res) => {
+  const { reserveid } = req.params;
+  const { email,name,number, numberOfPeople,date, time } = req.body;
+  try {
+    const updatedOrder = await Reservation.findByIdAndUpdate(
+      reserveid,
+      {email,name,number, numberOfPeople,date, time },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
