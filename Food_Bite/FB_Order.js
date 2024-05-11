@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
+  username:String,
   email:String,
   number: Number,
   foodItems: [

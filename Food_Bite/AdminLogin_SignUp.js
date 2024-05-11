@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
 
 // User Schema
-const userSchema = new Schema({
-    username: String,
+const adminSchema = new Schema({
+    adminname: String,
     email: {
       type: String,
       required: true,
@@ -18,7 +18,7 @@ const userSchema = new Schema({
   });
   
   // Hashing password before saving user to database
-  userSchema.pre("save", async function (next) {
+  adminSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
   
     try {
@@ -31,5 +31,5 @@ const userSchema = new Schema({
     }
   });
   
-  const User = mongoose.model("User", userSchema);
-module.exports = { User };
+  const Admin = mongoose.model("Admin", adminSchema);
+module.exports = { Admin };
